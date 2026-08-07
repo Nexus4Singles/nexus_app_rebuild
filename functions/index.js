@@ -51,6 +51,20 @@ exports.validateAndRecordPurchase = validateAndRecordPurchase;
 exports.validateAndRecordSubscription = validateAndRecordSubscription;
 exports.revenueCatWebhook = revenueCatWebhook;
 
+// UK daily carousel generation and notification pipeline.
+const {
+  calculateDailyProfilesScheduled,
+  sendDailyProfileNotificationsScheduled,
+  sendDailyProfileReminderScheduled,
+  calculateDailyProfiles,
+  sendDailyProfileNotifications,
+} = require('./daily_profiles');
+exports.calculateDailyProfilesScheduled = calculateDailyProfilesScheduled;
+exports.sendDailyProfileNotificationsScheduled = sendDailyProfileNotificationsScheduled;
+exports.sendDailyProfileReminderScheduled = sendDailyProfileReminderScheduled;
+exports.calculateDailyProfiles = calculateDailyProfiles;
+exports.sendDailyProfileNotifications = sendDailyProfileNotifications;
+
 // Re-export scheduled booking expiry function
 const { expireStaleBookings } = require('./expire_stale_bookings');
 exports.expireStaleBookings = expireStaleBookings;
@@ -1224,9 +1238,28 @@ exports.handleUpdateUserSubscriptionStatus = functions
       // ====================================================================
       // SECURITY: Verify webhook signature
       // ====================================================================
-      const signature = req.headers['verificationhash'] || req.headers['x-flutterwave-signature'];
+      const signatureCandidates = {
+        verificationhash: req.headers['verificationhash'],
+        'verification-hash': req.headers['verification-hash'],
+        'verif-hash': req.headers['verif-hash'],
+        'x-flutterwave-signature': req.headers['x-flutterwave-signature'],
+        'x-flw-signature': req.headers['x-flw-signature'],
+      };
+      const signature = Object.values(signatureCandidates).find(Boolean)
+        || Object.entries(req.headers).find(
+          ([key]) => {
+            const lowerKey = String(key).toLowerCase();
+            return (
+              lowerKey.includes('signature') &&
+              (lowerKey.includes('flw') || lowerKey.includes('flutterwave'))
+            );
+          }
+        )?.[1];
+
+      console.log('[Flutterwave] Signature candidates:', signatureCandidates);
       if (!signature) {
-        console.error('[Flutterwave] Missing signature header');
+        console.error('[Flutterwave] Missing signature header. Header keys:', Object.keys(req.headers));
+        console.error('[Flutterwave] Request headers:', JSON.stringify(req.headers));
         return res.status(401).json({ error: 'Unauthorized: Missing signature' });
       }
 
@@ -1235,15 +1268,45 @@ exports.handleUpdateUserSubscriptionStatus = functions
         return res.status(500).json({ error: 'Server misconfigured' });
       }
 
-      // Flutterwave uses SHA256 hash for verification
-      const payload = JSON.stringify(req.body);
-      const hash = crypto
+      const rawBody = req.rawBody || (req.body ? JSON.stringify(req.body) : '');
+      const payload = typeof rawBody === 'string'
+        ? rawBody
+        : Buffer.isBuffer(rawBody)
+          ? rawBody.toString('utf8')
+          : JSON.stringify(rawBody);
+      const normalizedSignature = Array.isArray(signature) ? signature[0] : String(signature).trim();
+
+      console.log('[Flutterwave] rawBody length:', typeof rawBody === 'string' ? rawBody.length : rawBody?.length ?? 'unknown');
+      const hashSha256 = crypto
         .createHmac('sha256', WEBHOOK_SECRET)
         .update(payload)
-        .digest('hex');
+        .digest();
+      const hashSha256Hex = hashSha256.toString('hex');
+      const hashSha256Base64 = hashSha256.toString('base64');
+      const hashSha1 = crypto
+        .createHmac('sha1', WEBHOOK_SECRET)
+        .update(payload)
+        .digest();
+      const hashSha1Hex = hashSha1.toString('hex');
+      const hashSha1Base64 = hashSha1.toString('base64');
+      const signatureMatches = [
+        hashSha256Hex,
+        hashSha256Base64,
+        hashSha1Hex,
+        hashSha1Base64,
+        WEBHOOK_SECRET,
+      ].includes(normalizedSignature);
 
-      if (hash !== signature) {
+      if (!signatureMatches) {
         console.error('[Flutterwave] Signature verification failed');
+        console.error('[Flutterwave] signature header:', normalizedSignature);
+        console.error('[Flutterwave] computed sha256 (hex):', hashSha256Hex);
+        console.error('[Flutterwave] computed sha256 (base64):', hashSha256Base64);
+        console.error('[Flutterwave] computed sha1 (hex):', hashSha1Hex);
+        console.error('[Flutterwave] computed sha1 (base64):', hashSha1Base64);
+        console.error('[Flutterwave] payload length:', payload.length);
+        console.error('[Flutterwave] payload preview:', payload.slice(0, 200).replace(/\r?\n/g, ' '));
+        console.error('[Flutterwave] Request headers:', JSON.stringify(req.headers));
         return res.status(401).json({ error: 'Unauthorized: Invalid signature' });
       }
 
@@ -1373,6 +1436,7 @@ exports.handleUpdateUserSubscriptionStatus = functions
       // UPDATE USER SUBSCRIPTION FIELDS (NEW FORMAT) - ATOMIC + IDEMPOTENT
       // ====================================================================
       const now = admin.firestore.FieldValue.serverTimestamp();
+      const db = admin.firestore();
 
       try {
         await db.runTransaction(async (transaction) => {
@@ -1883,14 +1947,53 @@ exports.flutterwaveBookingWebhook = functions
   .runWith({ secrets: ['FLUTTERWAVE_WEBHOOK_SECRET'] })
   .https.onRequest(async (req, res) => {
     const WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET;
-    const signature = req.headers['verificationhash'] || req.headers['x-flutterwave-signature'];
+    const signature = req.headers['verificationhash']
+      || req.headers['verification-hash']
+      || req.headers['verif-hash']
+      || req.headers['x-flutterwave-signature']
+      || req.headers['x-flw-signature'];
 
     if (WEBHOOK_SECRET) {
-      const hash = crypto.createHmac('sha256', WEBHOOK_SECRET)
-        .update(JSON.stringify(req.body))
-        .digest('hex');
-      if (hash !== signature) {
+      if (!signature) {
+        console.warn('[BookingWebhook] Missing signature header. Received headers:', Object.keys(req.headers));
+        res.status(401).send('Unauthorized');
+        return;
+      }
+
+      const rawBody = req.rawBody || '';
+      const payload = typeof rawBody === 'string'
+        ? rawBody
+        : Buffer.isBuffer(rawBody)
+          ? rawBody.toString('utf8')
+          : JSON.stringify(req.body || {});
+      const normalizedSignature = Array.isArray(signature) ? signature[0] : String(signature).trim();
+
+      const hashSha256 = crypto.createHmac('sha256', WEBHOOK_SECRET)
+        .update(payload)
+        .digest();
+      const hashSha256Hex = hashSha256.toString('hex');
+      const hashSha256Base64 = hashSha256.toString('base64');
+      const hashSha1 = crypto.createHmac('sha1', WEBHOOK_SECRET)
+        .update(payload)
+        .digest();
+      const hashSha1Hex = hashSha1.toString('hex');
+      const hashSha1Base64 = hashSha1.toString('base64');
+
+      const validBookingSignature = [
+        hashSha256Hex,
+        hashSha256Base64,
+        hashSha1Hex,
+        hashSha1Base64,
+        WEBHOOK_SECRET,
+      ].includes(normalizedSignature);
+
+      if (!validBookingSignature) {
         console.warn('[BookingWebhook] Invalid signature');
+        console.warn('[BookingWebhook] signature header:', normalizedSignature);
+        console.warn('[BookingWebhook] computed sha256 (hex):', hashSha256Hex);
+        console.warn('[BookingWebhook] computed sha256 (base64):', hashSha256Base64);
+        console.warn('[BookingWebhook] computed sha1 (hex):', hashSha1Hex);
+        console.warn('[BookingWebhook] computed sha1 (base64):', hashSha1Base64);
         res.status(401).send('Unauthorized');
         return;
       }

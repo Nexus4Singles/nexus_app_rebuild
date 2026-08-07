@@ -1,8 +1,97 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nexus_app_v2/features/dating_search/application/market_phase_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/application/market_country_utils.dart';
+import 'package:nexus_app_v2/features/dating_search/application/waiting_list_provider.dart';
 import 'package:nexus_app_v2/features/dating_search/presentation/screens/waiting_list_screen.dart';
 
 void main() {
+  group('MarketCountryUtils staged launch markets', () {
+    test('classifies US, Canada, and Europe as prelaunch carousel markets', () {
+      expect(MarketCountryUtils.isPrelaunchCarouselMarket('United States'), isTrue);
+      expect(MarketCountryUtils.isPrelaunchCarouselMarket('Canada'), isTrue);
+      expect(MarketCountryUtils.isPrelaunchCarouselMarket('France'), isTrue);
+    });
+
+    test('keeps UK and African markets on their existing paths', () {
+      expect(MarketCountryUtils.isPrelaunchCarouselMarket('United Kingdom'), isFalse);
+      expect(MarketCountryUtils.isAfricanMarket('Nigeria'), isTrue);
+      expect(MarketCountryUtils.marketCodeForCountry('United States'), 'us');
+      expect(MarketCountryUtils.marketCodeForCountry('Canada'), 'canada');
+      expect(MarketCountryUtils.marketCodeForCountry('France'), 'france');
+    });
+  });
+
+  group('countUkUsers', () {
+    test('counts current UK users by gender across supported schemas', () {
+      final stats = countUkUsers([
+        {'countryOfResidence': 'United Kingdom', 'gender': 'male'},
+        {'country': 'United Kingdom', 'gender': 'female'},
+        {
+          'dating': {
+            'countryOfResidence': 'UK',
+            'gender': 'FEMALE',
+          },
+        },
+        {'countryOfResidence': 'Nigeria', 'gender': 'female'},
+      ]);
+
+      expect(stats.totalCount, 3);
+      expect(stats.maleCount, 1);
+      expect(stats.femaleCount, 2);
+    });
+
+    test('recalculates when a UK user appears after the initial snapshot', () {
+      final initialStats = countUkUsers([
+        {'countryOfResidence': 'United Kingdom', 'gender': 'male'},
+      ]);
+      final laterStats = countUkUsers([
+        {'countryOfResidence': 'United Kingdom', 'gender': 'male'},
+        {'countryOfResidence': 'United Kingdom', 'gender': 'female'},
+      ]);
+
+      expect(initialStats.totalCount, 1);
+      expect(laterStats.totalCount, 2);
+      expect(laterStats.femaleCount, 1);
+    });
+  });
+
+  group('countVerifiedUkProfiles', () {
+    test('counts verified UK users from the live profile schema', () {
+      final counts = countVerifiedUkProfiles([
+        {
+          'dating': {
+            'verificationStatus': 'verified',
+            'gender': 'male',
+            'profile': {'country': 'United Kingdom'},
+          },
+        },
+        {
+          'countryOfResidence': 'United Kingdom',
+          'verificationStatus': 'verified',
+          'gender': 'female',
+        },
+        {
+          'dating': {
+            'verificationStatus': 'pending',
+            'gender': 'female',
+            'profile': {'country': 'United Kingdom'},
+          },
+        },
+        {
+          'dating': {
+            'verificationStatus': 'verified',
+            'gender': 'female',
+            'profile': {'country': 'Nigeria'},
+          },
+        },
+      ]);
+
+      expect(counts.total, 2);
+      expect(counts.male, 1);
+      expect(counts.female, 1);
+    });
+  });
+
   group('shouldShowProfilesForUkMarket', () {
     test('returns false when market is null', () {
       expect(shouldShowProfilesForUkMarket(null), isFalse);
@@ -34,6 +123,19 @@ void main() {
       );
 
       expect(shouldShowProfilesForUkMarket(market, nowUtc: nowUtc), isTrue);
+    });
+  });
+
+  group('shouldBypassUkLaunchGate', () {
+    test('returns true for the configured admin email', () {
+      expect(
+        shouldBypassUkLaunchGate('nexus4singles@gmail.com'),
+        isTrue,
+      );
+    });
+
+    test('returns false for other emails', () {
+      expect(shouldBypassUkLaunchGate('someone@example.com'), isFalse);
     });
   });
 

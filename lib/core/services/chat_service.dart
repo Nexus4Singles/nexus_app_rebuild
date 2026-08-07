@@ -1261,21 +1261,24 @@ class ChatService {
 
   /// Format last active for display
   static String formatLastActive(DateTime? lastActive) {
-    if (lastActive == null) return 'Offline';
+    if (lastActive == null) return 'Last active unavailable';
 
     final now = DateTime.now();
     final diff = now.difference(lastActive);
 
-    if (diff.inMinutes < 1) return 'Active now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    // A server timestamp can be slightly ahead of the device clock.
+    if (diff.isNegative) return 'Last active just now';
+
+    if (diff.inMinutes < 1) return 'Last active just now';
+    if (diff.inMinutes < 60) return 'Last active ${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return 'Last active ${diff.inHours}h ago';
+    if (diff.inDays < 7) return 'Last active ${diff.inDays}d ago';
     if (diff.inDays < 30) {
       final weeks = (diff.inDays / 7).floor();
-      return '${weeks}w ago';
+      return 'Last active ${weeks}w ago';
     }
 
-    return 'Long time ago';
+    return 'Last active a long time ago';
   }
 
   /// Exception for chat operations

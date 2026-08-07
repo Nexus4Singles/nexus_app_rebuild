@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import '../domain/dating_profile.dart';
-import '../data/dating_search_service.dart';
 import 'dating_preferences_provider.dart';
 
 /// Daily profiles state - tracks which profiles have been shown today
@@ -114,12 +113,29 @@ final dailyProfilesProvider = FutureProvider.autoDispose<DailyProfilesState?>((
       // Fetch from Cloud Function output
       final dailyProfilesDoc = await _loadDailyProfilesDoc(fs, uid, today);
 
+      final viewedSnapshot = await fs
+          .collection('users')
+          .doc(uid)
+          .collection('dailyProfilesViewed')
+          .get();
+      final viewedProfileIds = viewedSnapshot.docs.map((doc) => doc.id).toSet();
+      final viewedCount = viewedSnapshot.docs.where((doc) {
+        final viewedAt = doc.data()['viewedAt'];
+        if (viewedAt is Timestamp) {
+          return !viewedAt.toDate().toUtc().isBefore(
+            DateTime.utc(now.year, now.month, now.day),
+          );
+        }
+        return false;
+      }).length;
+      final remainingSlots = (5 - viewedCount).clamp(0, 5);
+
       if (!dailyProfilesDoc.exists) {
         return DailyProfilesState(
           profiles: [],
-          viewedCount: 0,
+          viewedCount: viewedCount,
           resetTime: DateTime.utc(tomorrow.year, tomorrow.month, tomorrow.day),
-          isDailyLimitReached: false,
+          isDailyLimitReached: remainingSlots == 0,
         );
       }
 
@@ -138,13 +154,38 @@ final dailyProfilesProvider = FutureProvider.autoDispose<DailyProfilesState?>((
           final profileId = profileData['profileId'] as String?;
           final score = profileData['compatibilityScore'] as int?;
 
-          if (profileId == null) continue;
+          if (profileId == null ||
+              viewedProfileIds.contains(profileId) ||
+              profiles.length >= remainingSlots) {
+            continue;
+          }
 
           // Fetch full profile document
           final userDoc = await fs.collection('users').doc(profileId).get();
           if (!userDoc.exists) continue;
 
           final userData = userDoc.data() as Map<String, dynamic>;
+
+            final profileCountry = (userData['dating'] is Map
+                ? (userData['dating'] as Map)['profile']
+                : null)
+              is Map
+              ? (((userData['dating'] as Map)['profile'] as Map)['country']
+                ?.toString()
+                .trim()
+                .toLowerCase())
+              : null;
+            final verificationStatus = userData['dating'] is Map
+              ? ((userData['dating'] as Map)['verificationStatus']
+                ?.toString()
+                .trim()
+                .toLowerCase())
+              : null;
+            if (profileCountry != 'united kingdom' ||
+              verificationStatus != 'verified' ||
+              userData['status'] == 'disabled') {
+            continue;
+            }
 
           // Gender filtering: show only opposite gender
           final profileGender = userData['gender'] as String?;
@@ -183,9 +224,9 @@ final dailyProfilesProvider = FutureProvider.autoDispose<DailyProfilesState?>((
 
       return DailyProfilesState(
         profiles: profiles,
-        viewedCount: 0,
+        viewedCount: viewedCount,
         resetTime: DateTime.utc(tomorrow.year, tomorrow.month, tomorrow.day),
-        isDailyLimitReached: false,
+        isDailyLimitReached: remainingSlots == 0,
       );
     } catch (e) {
       print('[DailyProfilesProvider] Error fetching daily profiles: $e');

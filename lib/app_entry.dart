@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +10,7 @@ import 'dart:math' as math;
 import 'app_shell.dart';
 import 'core/bootstrap/firebase_bootstrap.dart';
 import 'core/bootstrap/firebase_ready_provider.dart';
+import 'core/bootstrap/firestore_instance_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/notifications/notification_service.dart' show navigatorKey;
 import 'core/session/guest_session_provider.dart';
@@ -110,15 +113,19 @@ class AppLifecycleListener extends ConsumerStatefulWidget {
 
 class _AppLifecycleListenerState extends ConsumerState<AppLifecycleListener>
     with WidgetsBindingObserver {
+  Timer? _lastActiveTimer;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _updateLastActive();
+    _startLastActiveHeartbeat();
   }
 
   @override
   void dispose() {
+    _lastActiveTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -129,14 +136,25 @@ class _AppLifecycleListenerState extends ConsumerState<AppLifecycleListener>
       case AppLifecycleState.resumed:
         // App came to foreground - update last active
         _updateLastActive();
+        _startLastActiveHeartbeat();
         break;
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
       case AppLifecycleState.inactive:
         // App went to background
+        _lastActiveTimer?.cancel();
+        _lastActiveTimer = null;
         break;
     }
+  }
+
+  void _startLastActiveHeartbeat() {
+    _lastActiveTimer?.cancel();
+    _lastActiveTimer = Timer.periodic(
+      const Duration(minutes: 1),
+      (_) => _updateLastActive(),
+    );
   }
 
   Future<void> _updateLastActive() async {
@@ -146,9 +164,11 @@ class _AppLifecycleListenerState extends ConsumerState<AppLifecycleListener>
       final userId = authService.currentUser?.uid;
 
       if (userId != null && userId.isNotEmpty) {
-        // Update last active timestamp in Firestore
-        final chatService = ChatService();
-        await chatService.updateUserLastActive(userId);
+        final firestore = ref.read(firestoreInstanceProvider);
+        if (firestore == null) return;
+
+        // Use the configured Firestore instance so this write succeeds in all build modes.
+        await ChatService(firestore: firestore).updateUserLastActive(userId);
       }
     } catch (e) {
       debugPrint('Error updating last active: $e');

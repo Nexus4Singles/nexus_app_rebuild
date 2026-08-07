@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
@@ -13,6 +15,7 @@ import '../../application/market_phase_provider.dart';
 import 'dating_preferences_setup_screen.dart';
 import 'package:nexus_app_v2/core/dating/dating_verification_status_provider.dart';
 import '../widgets/daily_profile_native_ad.dart';
+import 'market_coming_soon_screen.dart';
 import 'waiting_list_screen.dart';
 
 /// Daily 5 profiles screen - shows 5 curated profiles per day as full-screen carousel
@@ -28,24 +31,45 @@ class DailyProfilesScreen extends ConsumerStatefulWidget {
 class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
     with AutomaticKeepAliveClientMixin {
   late PageController _pageController;
+  Timer? _dailyRefreshTimer;
   int _currentIndex = 0;
+  late String _loadedDateKey;
 
   @override
   void initState() {
     super.initState();
+    _loadedDateKey = _dateKey(DateTime.now().toUtc());
     _pageController = PageController();
     _pageController.addListener(() {
       setState(() {
         _currentIndex = _pageController.page?.toInt() ?? 0;
       });
     });
+    _dailyRefreshTimer = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (!mounted) return;
+      final nowUtc = DateTime.now().toUtc();
+      final currentDateKey = _dateKey(nowUtc);
+      final enteredNewDay = currentDateKey != _loadedDateKey;
+      final withinRolloverWindow = nowUtc.hour == 0;
+
+      if (enteredNewDay || withinRolloverWindow) {
+        _loadedDateKey = currentDateKey;
+        ref.invalidate(dailyProfilesProvider);
+      }
+    });
   }
 
   @override
   void dispose() {
+    _dailyRefreshTimer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
+
+  String _dateKey(DateTime date) =>
+      '${date.year.toString().padLeft(4, '0')}-'
+      '${date.month.toString().padLeft(2, '0')}-'
+      '${date.day.toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +164,10 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
                 ),
               ),
           data: (dailyState) {
+            if (dailyState?.isDailyLimitReached == true) {
+              return _buildDailyLimitState(context, dailyState!.resetTime);
+            }
+
             final hasProfiles =
                 dailyState != null && dailyState.profiles.isNotEmpty;
 
@@ -149,20 +177,23 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
                 orElse: () => null,
               );
               final isUkMarket =
-                  country != null &&
-                  MarketCountryUtils.isUkUsCanadaMarket(country);
-
-              if (isUkMarket) {
-                return const WaitingListScreen();
-              }
-
-              // If user has saved age-range preferences, show a specific
-              // message explaining there are no profiles within that range
+                  country != null && MarketCountryUtils.isUkMarket(country);
               final prefs = preferencesAsync.maybeWhen(
                 data: (p) => p,
                 orElse: () => null,
               );
 
+              if (isUkMarket) {
+                return const WaitingListScreen();
+              }
+
+              if (country != null &&
+                  MarketCountryUtils.isPrelaunchCarouselMarket(country)) {
+                return MarketComingSoonScreen(existingPreferences: prefs);
+              }
+
+              // If user has saved age-range preferences, show a specific
+              // message explaining there are no profiles within that range
               if (prefs != null) {
                 return _AgeRangeEmptyState(
                   minAge: prefs.minAge,
@@ -288,12 +319,6 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
                     physics: const BouncingScrollPhysics(),
                     onPageChanged: (index) {
                       setState(() => _currentIndex = index);
-                      if (index < dailyState.profiles.length) {
-                        _recordProfileView(
-                          dailyState.profiles[index],
-                          authAsync.valueOrNull?.uid,
-                        );
-                      }
                     },
                     itemCount: totalPages,
                     itemBuilder: (context, index) {
@@ -303,6 +328,10 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
                           profile: profile,
                           isCurrentCard: index == _currentIndex,
                           onTapProfile: () {
+                            _recordProfileView(
+                              profile,
+                              authAsync.valueOrNull?.uid,
+                            );
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder:
@@ -394,6 +423,40 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
     ref
         .read(dailyProfilesNotifierProvider.notifier)
         .recordProfileView(uid, profile.uid, false);
+  }
+
+  Widget _buildDailyLimitState(BuildContext context, DateTime resetTime) {
+    final resetTimeText = MaterialLocalizations.of(context).formatTimeOfDay(
+      TimeOfDay.fromDateTime(resetTime.toLocal()),
+    );
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.check_circle_outline, size: 64, color: AppColors.primary),
+            const SizedBox(height: 20),
+            Text(
+              'You have viewed today\'s 5 profiles',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.headlineSmall.copyWith(
+                color: AppColors.getTextPrimary(context),
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'New profiles will be available after midnight.\nNext reset: $resetTimeText',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.getTextSecondary(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override

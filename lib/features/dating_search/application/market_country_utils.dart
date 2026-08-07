@@ -1,4 +1,105 @@
 class MarketCountryUtils {
+  static bool isUkMarket(String? country) {
+    if (country == null || country.trim().isEmpty) return false;
+
+    const ukCountries = <String>{
+      'united kingdom',
+      'uk',
+      'england',
+      'scotland',
+      'wales',
+      'northern ireland',
+    };
+    return ukCountries.contains(country.trim().toLowerCase());
+  }
+
+  static bool isEuropeanMarket(String? country) {
+    if (country == null || country.trim().isEmpty) return false;
+
+    const europeanCountries = <String>{
+      'albania',
+      'andorra',
+      'austria',
+      'belarus',
+      'belgium',
+      'bosnia and herzegovina',
+      'bulgaria',
+      'croatia',
+      'cyprus',
+      'czech republic',
+      'czechia',
+      'denmark',
+      'estonia',
+      'finland',
+      'france',
+      'germany',
+      'greece',
+      'hungary',
+      'iceland',
+      'ireland',
+      'italy',
+      'kosovo',
+      'latvia',
+      'liechtenstein',
+      'lithuania',
+      'luxembourg',
+      'malta',
+      'moldova',
+      'monaco',
+      'montenegro',
+      'netherlands',
+      'north macedonia',
+      'norway',
+      'poland',
+      'portugal',
+      'romania',
+      'russia',
+      'san marino',
+      'serbia',
+      'slovakia',
+      'slovenia',
+      'spain',
+      'sweden',
+      'switzerland',
+      'ukraine',
+      'vatican city',
+    };
+    return europeanCountries.contains(country.trim().toLowerCase());
+  }
+
+  static bool isPrelaunchCarouselMarket(String? country) {
+    if (country == null || country.trim().isEmpty) return false;
+    final normalized = country.trim().toLowerCase();
+    return normalized == 'united states' ||
+        normalized == 'us' ||
+        normalized == 'usa' ||
+        normalized == 'america' ||
+        normalized == 'canada' ||
+        isEuropeanMarket(country);
+  }
+
+  static String marketCodeForCountry(String country) {
+    final normalized = country.trim().toLowerCase();
+    switch (normalized) {
+      case 'united states':
+      case 'us':
+      case 'usa':
+      case 'america':
+        return 'us';
+      case 'czech republic':
+        return 'czechia';
+      case 'united kingdom':
+      case 'uk':
+      case 'england':
+      case 'scotland':
+      case 'wales':
+      case 'northern ireland':
+        return 'uk';
+      default:
+        return normalized.replaceAll(' ', '_');
+    }
+  }
+
   static bool isAfricanMarket(String? country) {
     if (country == null || country.trim().isEmpty) return false;
 

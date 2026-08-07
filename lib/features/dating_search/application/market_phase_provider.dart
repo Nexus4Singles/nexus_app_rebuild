@@ -37,6 +37,77 @@ class MarketData {
   }
 }
 
+class UkMarketProfileCounts {
+  final int total;
+  final int male;
+  final int female;
+
+  const UkMarketProfileCounts({
+    required this.total,
+    required this.male,
+    required this.female,
+  });
+}
+
+UkMarketProfileCounts countVerifiedUkProfiles(
+  Iterable<Map<String, dynamic>> profiles,
+) {
+  var male = 0;
+  var female = 0;
+
+  for (final profile in profiles) {
+    final dating = profile['dating'] is Map
+        ? Map<String, dynamic>.from(profile['dating'] as Map)
+        : const <String, dynamic>{};
+    final datingProfile = dating['profile'] is Map
+        ? Map<String, dynamic>.from(dating['profile'] as Map)
+        : const <String, dynamic>{};
+
+    final verificationStatus = (dating['verificationStatus'] ??
+            profile['verificationStatus'])
+        ?.toString()
+        .trim()
+        .toLowerCase();
+    final country = (profile['countryOfResidence'] ??
+            profile['country'] ??
+            dating['countryOfResidence'] ??
+            datingProfile['country'])
+        ?.toString()
+        .trim()
+        .toLowerCase();
+    final gender = (dating['gender'] ??
+            profile['gender'] ??
+            datingProfile['gender'])
+        ?.toString()
+        .trim()
+        .toLowerCase();
+
+    if (verificationStatus != 'verified' ||
+        (country != 'united kingdom' && country != 'uk')) {
+      continue;
+    }
+
+    if (gender == 'male') {
+      male++;
+    } else if (gender == 'female') {
+      female++;
+    }
+  }
+
+  return UkMarketProfileCounts(
+    total: male + female,
+    male: male,
+    female: female,
+  );
+}
+
+const String ukLaunchBypassAdminEmail = 'nexus4singles@gmail.com';
+
+bool shouldBypassUkLaunchGate(String? userEmail) {
+  final normalizedEmail = userEmail?.trim().toLowerCase();
+  return normalizedEmail == ukLaunchBypassAdminEmail;
+}
+
 /// Returns true only when the UK market launch date has passed.
 ///
 /// This intentionally ignores the stored phase value when the launch date is

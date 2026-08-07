@@ -181,34 +181,20 @@ class _DatingProfilesTab extends ConsumerWidget {
               // Male and Female on same line
               Row(
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.male_rounded, size: 16, color: Colors.blue),
-                      const SizedBox(width: 4),
-                      Text(
-                        '$maleCount ($malePercentage%)',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextPrimary(context),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'Male: $maleCount ($malePercentage%)',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.getTextPrimary(context),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(width: 16),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.female_rounded, size: 16, color: Colors.pink),
-                      const SizedBox(width: 4),
-                      Text(
-                        '$femaleCount ($femalePercentage%)',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextPrimary(context),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'Female: $femaleCount ($femalePercentage%)',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.getTextPrimary(context),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),

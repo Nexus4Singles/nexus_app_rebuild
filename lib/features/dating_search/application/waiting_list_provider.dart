@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 
-/// Stats about the UK waiting list - gender distribution and counts
+/// Live UK user gender distribution and counts for the admin review header.
 class WaitingListStats {
   final int? maleCount;
   final int? femaleCount;
@@ -17,6 +17,49 @@ class WaitingListStats {
   });
 }
 
+WaitingListStats countUkUsers(
+  Iterable<Map<String, dynamic>> profiles,
+) {
+  var maleCount = 0;
+  var femaleCount = 0;
+
+  for (final profile in profiles) {
+    final dating = profile['dating'] is Map
+      ? Map<String, dynamic>.from(profile['dating'] as Map)
+      : const <String, dynamic>{};
+    final datingProfile = dating['profile'] is Map
+      ? Map<String, dynamic>.from(dating['profile'] as Map)
+      : const <String, dynamic>{};
+    final country = (profile['countryOfResidence'] ??
+        profile['country'] ??
+        dating['countryOfResidence'] ??
+        datingProfile['country'])
+      ?.toString()
+      .trim()
+      .toLowerCase();
+    if (country != 'united kingdom' && country != 'uk') continue;
+
+    final gender = (dating['gender'] ??
+        profile['gender'] ??
+        datingProfile['gender'])
+      ?.toString()
+      .trim()
+      .toLowerCase();
+    if (gender == 'male') {
+      maleCount++;
+    } else if (gender == 'female') {
+      femaleCount++;
+    }
+  }
+
+  return WaitingListStats(
+    maleCount: maleCount,
+    femaleCount: femaleCount,
+    totalCount: maleCount + femaleCount,
+    lastUpdated: DateTime.now(),
+  );
+}
+
 /// Provider for UK waiting list stats (real-time)
 final ukWaitingListStatsProvider = StreamProvider<WaitingListStats?>((
   ref,
@@ -28,31 +71,10 @@ final ukWaitingListStatsProvider = StreamProvider<WaitingListStats?>((
   }
 
   try {
-    // Stream changes to the waiting list stats document
-    await for (final doc
-        in fs
-            .collection('config')
-            .doc('waitingListStats')
-            .collection('countries')
-            .doc('United Kingdom')
-            .snapshots()) {
-      if (!doc.exists) {
-        yield WaitingListStats(totalCount: 0);
-        continue;
-      }
-
-      final data = doc.data() ?? {};
-      final stats = WaitingListStats(
-        maleCount: data['maleCount'] as int?,
-        femaleCount: data['femaleCount'] as int?,
-        totalCount: (data['totalCount'] as int?) ?? 0,
-        lastUpdated:
-            data['lastUpdated'] != null
-                ? DateTime.parse(data['lastUpdated'] as String)
-                : null,
+    await for (final snapshot in fs.collection('users').snapshots()) {
+      yield countUkUsers(
+        snapshot.docs.map((doc) => doc.data()),
       );
-
-      yield stats;
     }
   } catch (e) {
     print('[WaitingListProvider] Error streaming stats: $e');

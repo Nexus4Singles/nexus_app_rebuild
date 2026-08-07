@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/application/market_phase_provider.dart';
 
 /// Market Launch Control Panel - Admin-only screen for controlling market launches
 /// Allows admins to view market status, set launch dates, and trigger launches
@@ -88,9 +89,29 @@ class _MarketLaunchControlScreenState
   }
 
   Widget _buildMarketSelector(BuildContext context) {
-    final markets = ['uk', 'nigeria', 'ghana'];
+    final markets = [
+      'uk',
+      'us',
+      'canada',
+      'france',
+      'germany',
+      'spain',
+      'italy',
+      'netherlands',
+      'ireland',
+      'nigeria',
+      'ghana',
+    ];
     final marketLabels = {
       'uk': '🇬🇧 United Kingdom',
+      'us': '🇺🇸 United States',
+      'canada': '🇨🇦 Canada',
+      'france': '🇫🇷 France',
+      'germany': '🇩🇪 Germany',
+      'spain': '🇪🇸 Spain',
+      'italy': '🇮🇹 Italy',
+      'netherlands': '🇳🇱 Netherlands',
+      'ireland': '🇮🇪 Ireland',
       'nigeria': '🇳🇬 Nigeria',
       'ghana': '🇬🇭 Ghana',
     };
@@ -149,10 +170,10 @@ class _MarketLaunchControlScreenState
   Widget _buildMarketStatusCard(BuildContext context) {
     final fs = ref.watch(firestoreInstanceProvider);
 
-    return StreamBuilder<DocumentSnapshot>(
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       stream: fs?.collection('markets').doc(_selectedMarket).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+      builder: (context, marketSnapshot) {
+        if (!marketSnapshot.hasData) {
           return Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -164,118 +185,116 @@ class _MarketLaunchControlScreenState
           );
         }
 
-        final data = snapshot.data?.data() as Map<String, dynamic>?;
+        final data = marketSnapshot.data?.data();
         if (data == null) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.getSurface(context),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.warning, width: 1.5),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Market Not Found',
-                  style: AppTextStyles.titleMedium.copyWith(
-                    color: AppColors.warning,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'No market configuration exists for $_selectedMarket',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                  ),
-                ),
-              ],
-            ),
+          return Text('No market configuration exists for $_selectedMarket');
+        }
+
+        final phase = data['phase']?.toString() ?? 'unknown';
+        final launchDate = data['launchDate'] as Timestamp?;
+        final storedGender = data['gender'] as Map<String, dynamic>? ?? {};
+        final storedCounts = UkMarketProfileCounts(
+          total: (data['approvedProfileCount'] as num?)?.toInt() ?? 0,
+          male: (storedGender['male'] as num?)?.toInt() ?? 0,
+          female: (storedGender['female'] as num?)?.toInt() ?? 0,
+        );
+
+        if (_selectedMarket != 'uk' || fs == null) {
+          return _buildStatusCard(
+            context,
+            phase: phase,
+            launchDate: launchDate,
+            counts: storedCounts,
           );
         }
 
-        final phase = data['phase'] ?? 'unknown';
-        final launchDate = data['launchDate'] as Timestamp?;
-        final approvedCount = data['approvedProfileCount'] ?? 0;
-        final gender = data['gender'] as Map<String, dynamic>? ?? {};
-        final maleCount = gender['male'] ?? 0;
-        final femaleCount = gender['female'] ?? 0;
-
-        final phaseColor =
-            phase == 'active'
-                ? AppColors.success
-                : phase == 'prelaunch'
-                ? AppColors.warning
-                : AppColors.info;
-
-        return Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                phaseColor.withOpacity(0.1),
-                phaseColor.withOpacity(0.05),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: phaseColor.withOpacity(0.3), width: 1.5),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Current Status',
-                    style: AppTextStyles.titleMedium.copyWith(
-                      color: AppColors.getTextPrimary(context),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: phaseColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: phaseColor.withOpacity(0.5)),
-                    ),
-                    child: Text(
-                      phase.toUpperCase(),
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: phaseColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              _buildStatusRow(context, 'Approved Profiles', '$approvedCount'),
-              const SizedBox(height: 12),
-              _buildStatusRow(
-                context,
-                'Gender Balance',
-                '$maleCount♂ / $femaleCount♀',
-              ),
-              if (launchDate != null) ...[
-                const SizedBox(height: 12),
-                _buildStatusRow(
-                  context,
-                  'Scheduled Launch',
-                  launchDate.toDate().toString().split('.')[0],
-                ),
-              ],
-            ],
-          ),
+        return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: fs
+              .collection('users')
+              .where('dating.verificationStatus', isEqualTo: 'verified')
+              .snapshots(),
+          builder: (context, userSnapshot) {
+            final counts = userSnapshot.hasData
+                ? countVerifiedUkProfiles(
+                    userSnapshot.data!.docs.map((doc) => doc.data()),
+                  )
+                : storedCounts;
+            return _buildStatusCard(
+              context,
+              phase: phase,
+              launchDate: launchDate,
+              counts: counts,
+            );
+          },
         );
       },
+    );
+  }
+
+  Widget _buildStatusCard(
+    BuildContext context, {
+    required String phase,
+    required Timestamp? launchDate,
+    required UkMarketProfileCounts counts,
+  }) {
+    final phaseColor =
+        phase == 'active'
+            ? AppColors.success
+            : phase == 'prelaunch'
+            ? AppColors.warning
+            : AppColors.info;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [phaseColor.withOpacity(0.1), phaseColor.withOpacity(0.05)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: phaseColor.withOpacity(0.3), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Current Status',
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.getTextPrimary(context),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                phase.toUpperCase(),
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: phaseColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildStatusRow(context, 'Approved Profiles', '${counts.total}'),
+          const SizedBox(height: 12),
+          _buildStatusRow(
+            context,
+            'Gender Balance',
+            'Male: ${counts.male} / Female: ${counts.female}',
+          ),
+          if (launchDate != null) ...[
+            const SizedBox(height: 12),
+            _buildStatusRow(
+              context,
+              'Scheduled Launch',
+              launchDate.toDate().toString().split('.')[0],
+            ),
+          ],
+        ],
+      ),
     );
   }
 
@@ -625,11 +644,11 @@ class _MarketLaunchControlScreenState
         }
       }
 
-      await fs?.collection('markets').doc(_selectedMarket).update({
+      await fs?.collection('markets').doc(_selectedMarket).set({
         'phase': 'prelaunch',
         'launchDate': Timestamp.fromDate(launchDateTime),
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }, SetOptions(merge: true));
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

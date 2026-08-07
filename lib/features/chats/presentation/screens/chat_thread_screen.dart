@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -367,12 +366,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   late final ja.AudioPlayer _player;
   late final AudioRecorder _recorder;
 
-  String? _debugOtherId;
-  String? _debugFirstMessageSenderId;
-  bool? _debugFirstMessageIsMe;
-  bool? _debugFirstMessageIsDeclined;
-  int _debugMessageCount = 0;
-
   bool _isRecording = false;
   String? _recordingPath;
   Timer? _recordingTimer;
@@ -662,7 +655,11 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   /// Handle message decline - update Firestore and send notification
-  Future<void> _handleDeclineMessage(String messageId, String senderId, String reason) async {
+  Future<void> _handleDeclineMessage(
+    String messageId,
+    String senderId,
+    String reason,
+  ) async {
     if (!mounted) return;
 
     try {
@@ -2442,21 +2439,22 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           );
                         }).toList();
 
-                    _debugMessageCount = uiMsgs.length;
-                    _debugFirstMessageSenderId = uiMsgs.isNotEmpty ? uiMsgs[0].senderId : null;
-                    _debugFirstMessageIsMe = uiMsgs.isNotEmpty ? uiMsgs[0].isMe : null;
-                    _debugFirstMessageIsDeclined = uiMsgs.isNotEmpty ? uiMsgs[0].isDeclined : null;
-
-                    final convoAsync = ref.watch(chatConversationProvider(widget.chatId));
-                    _debugOtherId = convoAsync.maybeWhen(
+                    final convoAsync = ref.watch(
+                      chatConversationProvider(widget.chatId),
+                    );
+                    final otherId = convoAsync.maybeWhen(
                       data: (c) => _resolveOtherId(c, mine),
                       orElse: () => null,
                     );
 
-                    debugPrint('[ChatThread] decline-scan mine=$mine otherId=${_debugOtherId ?? 'null'} count=${uiMsgs.length}');
+                    debugPrint(
+                      '[ChatThread] decline-scan mine=$mine otherId=${otherId ?? 'null'} count=${uiMsgs.length}',
+                    );
                     for (final item in uiMsgs) {
                       final normalizedSender = item.senderId.trim();
-                      debugPrint('[ChatThread] decline-candidate id=${item.id} sender=${normalizedSender} isMe=${item.isMe} isDeclined=${item.isDeclined}');
+                      debugPrint(
+                        '[ChatThread] decline-candidate id=${item.id} sender=${normalizedSender} isMe=${item.isMe} isDeclined=${item.isDeclined}',
+                      );
                     }
 
                     DeclineTarget? declineTarget;
@@ -2469,7 +2467,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                         break;
                       }
                     }
-                    debugPrint('[ChatThread] declineTarget=${declineTarget == null ? 'null' : '${declineTarget.messageId}/${declineTarget.senderId}'}');
+                    debugPrint(
+                      '[ChatThread] declineTarget=${declineTarget == null ? 'null' : '${declineTarget.messageId}/${declineTarget.senderId}'}',
+                    );
 
                     declineMessageId = declineTarget?.messageId;
                     declineSenderId = declineTarget?.senderId;
@@ -2515,26 +2515,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
               },
             ),
           ),
-          if (kDebugMode)
-            Container(
-              width: double.infinity,
-              color: Colors.yellow.shade100,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Text(
-                'DEBUG: chatId=${widget.chatId} '
-                'otherId=${_debugOtherId ?? 'null'} '
-                'count=${_debugMessageCount} '
-                'first.sender=${_debugFirstMessageSenderId ?? 'null'} '
-                'first.isMe=${_debugFirstMessageIsMe ?? 'null'} '
-                'first.declined=${_debugFirstMessageIsDeclined ?? 'null'} '
-                'declineMessageId=${declineMessageId ?? 'null'} '
-                'declineSenderId=${declineSenderId ?? 'null'}',
-                style: AppTextStyles.caption.copyWith(
-                  color: Colors.black87,
-                  fontSize: 12,
-                ),
-              ),
-            ),
           // Block status indicator
           Consumer(
             builder: (context, ref, _) {
@@ -2616,18 +2596,20 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                       await _sendText();
                     }
                     : null,
-            onDeclineTap: declineMessageId != null && declineSenderId != null
-                ? () => _showDeclineReasonBottomSheet(
+            onDeclineTap:
+                declineMessageId != null && declineSenderId != null
+                    ? () => _showDeclineReasonBottomSheet(
                       context,
                       declineMessageId!,
                       declineSenderId!,
                     )
-                : null,
-            onDeclineClear: declineMessageId != null
-                ? () => setState(() {
+                    : null,
+            onDeclineClear:
+                declineMessageId != null
+                    ? () => setState(() {
                       _clearedDeclineMessageId = declineMessageId;
                     })
-                : null,
+                    : null,
             replySnippet: _replyTo == null ? null : _replySnippet(_replyTo!),
             replyWasMine: _replyTo?.isMe,
             onClearReply: () => setState(() => _replyTo = null),

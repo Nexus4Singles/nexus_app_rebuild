@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/market_phase_provider.dart';
@@ -8,6 +9,7 @@ import '../../domain/dating_preferences.dart';
 import 'dating_preferences_setup_screen.dart';
 import 'search_results_grid_screen.dart';
 import 'waiting_list_screen.dart';
+import 'market_coming_soon_screen.dart';
 import 'daily_profiles_screen.dart';
 import 'package:nexus_app_v2/core/dating/dating_verification_status_provider.dart';
 
@@ -132,25 +134,28 @@ class _SearchResultsRouterScreenState
       return const SearchResultsGridScreen();
     }
 
-    final normalizedCountry = country.trim().toLowerCase();
-    final isUkMarket =
-        normalizedCountry == 'united kingdom' ||
-        normalizedCountry == 'uk' ||
-        normalizedCountry == 'england' ||
-        normalizedCountry == 'scotland' ||
-        normalizedCountry == 'wales' ||
-        normalizedCountry == 'northern ireland';
+    final isUkMarket = MarketCountryUtils.isUkMarket(country);
 
     if (isUkMarket) {
+      final authState = ref.watch(authStateProvider);
+      final currentUserEmail = authState.asData?.value?.email;
+      final bypassUkLaunchGate = shouldBypassUkLaunchGate(currentUserEmail);
       final marketAsync = ref.watch(marketPhaseProvider('uk'));
       return marketAsync.when(
         data: (marketData) {
-          final shouldShowProfiles = shouldShowProfilesForUkMarket(marketData);
+          final shouldShowProfiles =
+              bypassUkLaunchGate || shouldShowProfilesForUkMarket(marketData);
 
           if (shouldShowProfiles) {
-            print(
-              '[SearchResultsRouter] 🇬🇧 UK market launch date has passed - showing daily profiles',
-            );
+            if (bypassUkLaunchGate) {
+              print(
+                '[SearchResultsRouter] 🇬🇧 UK launch bypass active for $currentUserEmail - showing daily profiles',
+              );
+            } else {
+              print(
+                '[SearchResultsRouter] 🇬🇧 UK market launch date has passed - showing daily profiles',
+              );
+            }
             return _buildDailyProfilesOrVerificationGate(context, preferences);
           }
 
@@ -178,6 +183,37 @@ class _SearchResultsRouterScreenState
         error: (error, stackTrace) {
           print('[SearchResultsRouter] ⚠️ UK market lookup failed: $error');
           return const WaitingListScreen();
+        },
+      );
+    }
+
+    if (MarketCountryUtils.isPrelaunchCarouselMarket(country)) {
+      final marketCode = MarketCountryUtils.marketCodeForCountry(country);
+      final marketAsync = ref.watch(marketPhaseProvider(marketCode));
+      return marketAsync.when(
+        data: (marketData) {
+          if (shouldShowProfilesForUkMarket(marketData)) {
+            print(
+              '[SearchResultsRouter] 🌐 $marketCode launch date has passed - showing carousel',
+            );
+            return _buildDailyProfilesOrVerificationGate(context, preferences);
+          }
+
+          print(
+            '[SearchResultsRouter] 🌐 $marketCode is prelaunch - showing coming soon screen',
+          );
+          return MarketComingSoonScreen(existingPreferences: preferences);
+        },
+        loading:
+            () => Scaffold(
+              backgroundColor: AppColors.getBackground(context),
+              body: const Center(child: CircularProgressIndicator()),
+            ),
+        error: (error, stackTrace) {
+          print(
+            '[SearchResultsRouter] ⚠️ $marketCode market lookup failed: $error',
+          );
+          return MarketComingSoonScreen(existingPreferences: preferences);
         },
       );
     }
