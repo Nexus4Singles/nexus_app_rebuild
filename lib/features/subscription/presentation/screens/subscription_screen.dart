@@ -833,17 +833,15 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
                           ),
                         ),
                       ] else if (_showPayOnlineFallback && Platform.isAndroid) ...[
-                        // Android-specific instruction: direct users to Instagram/email
-                        // where they can complete payment and request manual activation.
                         RichText(
                           text: TextSpan(
                             style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
-                              height: 1.4,
+                              height: 1.5,
                             ),
                             children: [
                               const TextSpan(
-                                text: 'If you face issues subscribing via GooglePlay, kindly visit our instagram bio ',
+                                text: 'If you are having issues subscribing via GooglePlay, kindly visit our Instagram bio ',
                               ),
                               TextSpan(
                                 text: '@nexus4christians',
@@ -852,9 +850,11 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
                                   color: AppColors.getTextPrimary(context),
                                 ),
                               ),
-                              const TextSpan(text: '.\n\n'),
                               const TextSpan(
-                                text: 'Your subscription will be activated automatically after payment. If not activated within 5 minutes, kindly contact ',
+                                text: ' for an alternative way to subscribe.\n\n',
+                              ),
+                              const TextSpan(
+                                text: 'If your subscription is not activated automatically, kindly send us a message on Instagram or email ',
                               ),
                               TextSpan(
                                 text: 'contact@nexus4christians.com',
@@ -863,15 +863,7 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
                                   color: AppColors.getTextPrimary(context),
                                 ),
                               ),
-                              const TextSpan(text: ' or message '),
-                              TextSpan(
-                                text: '@nexus4christians',
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.getTextPrimary(context),
-                                ),
-                              ),
-                              const TextSpan(text: ' on Instagram with your receipt.'),
+                              const TextSpan(text: '.'),
                             ],
                           ),
                         ),

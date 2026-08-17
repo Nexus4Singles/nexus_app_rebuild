@@ -1810,6 +1810,13 @@ function getSubscriptionPricingForCountry(country) {
  * createSubscriptionPaymentLink
  * HTTP POST
  * Generates a user-specific Flutterwave payment link for monthly subscriptions.
+ *
+ * Supported flows:
+ * 1) App flow: valid Firebase ID token in Authorization header
+ * 2) Website flow: exact email address from the form (no Firebase auth on website)
+ *
+ * This keeps Android app payment flow working while allowing the website to map a
+ * supplied email to the correct Nexus account without requiring site login.
  */
 exports.createSubscriptionPaymentLink = functions
   .runWith({ secrets: ['FLUTTERWAVE_SECRET_KEY'] })
@@ -1821,24 +1828,61 @@ exports.createSubscriptionPaymentLink = functions
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   try {
+    const body = (req.body && typeof req.body === 'object') ? req.body : {};
+    const suppliedUid = typeof body.uid === 'string' ? body.uid.trim() : '';
+    const suppliedEmail = typeof body.email === 'string'
+      ? body.email.trim().toLowerCase()
+      : (typeof req.query?.email === 'string' ? req.query.email.trim().toLowerCase() : '');
+
+    let uid = suppliedUid;
+    let userData = {};
+    let userRef = null;
+
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Unauthorized' });
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const token = authHeader.slice(7);
+        const decoded = await admin.auth().verifyIdToken(token);
+        uid = decoded.uid;
+      } catch (err) {
+        console.warn('[createSubscriptionPaymentLink] Invalid Firebase token provided, falling back to email lookup if supplied.', err.message);
+      }
     }
 
-    const token = authHeader.slice(7);
-    const decoded = await admin.auth().verifyIdToken(token);
-    const uid = decoded.uid;
+    if (!uid && suppliedEmail) {
+      const emailSnapshot = await admin.firestore()
+        .collection('users')
+        .where('email', '==', suppliedEmail)
+        .limit(1)
+        .get();
 
-    const userRef = admin.firestore().collection('users').doc(uid);
+      if (emailSnapshot.empty) {
+        return res.status(404).json({
+          error: 'No account found for that email. Please use the exact email you used when creating your Nexus account.',
+        });
+      }
+
+      const matchedUser = emailSnapshot.docs[0];
+      uid = matchedUser.id;
+      userData = matchedUser.data() || {};
+      userRef = matchedUser.ref;
+    }
+
+    if (!uid) {
+      return res.status(401).json({
+        error: 'Unauthorized. Provide a valid Firebase token or the exact email used to create the account.',
+      });
+    }
+
+    userRef = userRef || admin.firestore().collection('users').doc(uid);
     const userSnap = await userRef.get();
     if (!userSnap.exists) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const userData = userSnap.data() || {};
-    const customerEmail = userData.email || decoded.email || 'customer@example.com';
-    const customerName = userData.username || userData.displayName || decoded.name || 'Nexus Customer';
+    userData = userData && Object.keys(userData).length ? userData : (userSnap.data() || {});
+    const customerEmail = userData.email || suppliedEmail || 'customer@example.com';
+    const customerName = userData.username || userData.displayName || 'Nexus Customer';
     // Prefer explicit 'countryOfResidence' fields (top-level or under dating)
     // because 'dating.profile.country' is used for profile region/nationality in some places.
     const countryOfResidence = userData.dating?.countryOfResidence
