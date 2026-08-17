@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
+import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -758,13 +759,15 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.info_outline, color: AppColors.primary, size: 20),
-                const SizedBox(width: 12),
+                if (!Platform.isAndroid)
+                  Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+                if (!Platform.isAndroid)
+                  const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (_showPayOnlineFallback) ...[
+                      if (_showPayOnlineFallback && !Platform.isAndroid) ...[
                         Text(
                           'If you have trouble subscribing through Playstore/Appstore, you can subscribe via card or bank transfer using the button below.',
                           style: AppTextStyles.bodySmall.copyWith(
@@ -827,6 +830,88 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
                                     ' on Instagram and your subscription will be activated.',
                               ),
                             ],
+                          ),
+                        ),
+                      ] else if (_showPayOnlineFallback && Platform.isAndroid) ...[
+                        // Android-specific instruction: direct users to Instagram/email
+                        // where they can complete payment and request manual activation.
+                        RichText(
+                          text: TextSpan(
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.getTextSecondary(context),
+                              height: 1.4,
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: 'If you face issues subscribing via GooglePlay, kindly visit our instagram bio ',
+                              ),
+                              TextSpan(
+                                text: '@nexus4christians',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.getTextPrimary(context),
+                                ),
+                              ),
+                              const TextSpan(text: '.\n\n'),
+                              const TextSpan(
+                                text: 'Your subscription will be activated automatically after payment. If not activated within 5 minutes, kindly contact ',
+                              ),
+                              TextSpan(
+                                text: 'contact@nexus4christians.com',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.getTextPrimary(context),
+                                ),
+                              ),
+                              const TextSpan(text: ' or message '),
+                              TextSpan(
+                                text: '@nexus4christians',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.getTextPrimary(context),
+                                ),
+                              ),
+                              const TextSpan(text: ' on Instagram with your receipt.'),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: 160,
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              final emailUri = Uri(scheme: 'mailto', path: 'contact@nexus4christians.com');
+                              try {
+                                if (!await launchUrl(emailUri)) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Could not open mail client')),
+                                    );
+                                  }
+                                }
+                              } catch (_) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Could not open mail client')),
+                                  );
+                                }
+                              }
+                            },
+                            icon: const Icon(Icons.email_outlined, size: 16),
+                            label: Text(
+                              'Email Support',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                              side: BorderSide(color: AppColors.primary),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
                           ),
                         ),
                       ] else ...[

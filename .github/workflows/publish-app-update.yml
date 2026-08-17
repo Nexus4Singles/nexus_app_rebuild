@@ -1,0 +1,29 @@
+name: Publish App Update Metadata
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out release
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Firebase Admin SDK
+        run: npm install --no-package-lock --ignore-scripts
+
+      - name: Publish update metadata
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+          RELEASE_SUMMARY: ${{ github.event.release.body }}
+        run: node scripts/publish_app_update_config.js

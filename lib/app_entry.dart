@@ -20,6 +20,7 @@ import 'core/widgets/chat_media_upload_lifecycle_handler.dart';
 import 'core/email_verification/email_verification_gate.dart';
 import 'features/launch/presentation/app_launch_gate.dart';
 import 'features/app_update/presentation/screens/app_update_checker.dart';
+import 'core/providers/app_update_provider.dart';
 import 'core/providers/auth_provider.dart';
 import 'core/services/chat_service.dart';
 import 'safe_imports.dart';
@@ -56,46 +57,46 @@ class _RootApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
 
-    return AppUpdateChecker(
-      child: MaterialApp(
-        localizationsDelegates: const [
-          CountryLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en')],
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        themeMode: themeMode,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        onGenerateRoute: onGenerateRoute,
-        builder: (context, child) {
-          // Safe Text Scaling Logic
-          // Calculates a scale factor based on screen width to prevent
-          // oversized fonts on small Android devices.
-          final double width = MediaQuery.of(context).size.width;
-          const double baseWidth = 390.0;
-          double scaleFactor = 1 + (width / baseWidth - 1) * 0.5;
-          double finalScale = math.max(0.88, math.min(1.10, scaleFactor));
+    return MaterialApp(
+      localizationsDelegates: const [
+        CountryLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en')],
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      themeMode: themeMode,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      onGenerateRoute: onGenerateRoute,
+      builder: (context, child) {
+        // Safe Text Scaling Logic
+        // Calculates a scale factor based on screen width to prevent
+        // oversized fonts on small Android devices.
+        final double width = MediaQuery.of(context).size.width;
+        const double baseWidth = 390.0;
+        double scaleFactor = 1 + (width / baseWidth - 1) * 0.5;
+        double finalScale = math.max(0.88, math.min(1.10, scaleFactor));
 
-          return MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: TextScaler.linear(finalScale)),
-            child: DefaultTextStyle(
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-              child: ChatMediaUploadLifecycleHandler(
-                child: AppLifecycleListener(
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(finalScale)),
+          child: DefaultTextStyle(
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            child: ChatMediaUploadLifecycleHandler(
+              child: AppLifecycleListener(
+                child: AppUpdateChecker(
                   child: child ?? const SizedBox.shrink(),
                 ),
               ),
             ),
-          );
-        },
-        home: const EmailVerificationGate(child: AppLaunchGate()),
-      ),
+          ),
+        );
+      },
+      home: const EmailVerificationGate(child: AppLaunchGate()),
     );
   }
 }
@@ -137,6 +138,7 @@ class _AppLifecycleListenerState extends ConsumerState<AppLifecycleListener>
         // App came to foreground - update last active
         _updateLastActive();
         _startLastActiveHeartbeat();
+        ref.invalidate(appUpdateProvider);
         break;
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:

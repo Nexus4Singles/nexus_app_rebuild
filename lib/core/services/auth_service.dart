@@ -353,9 +353,15 @@ class AuthService {
   /// Send email verification
   Future<void> sendEmailVerification() async {
     try {
-      await _auth.currentUser?.sendEmailVerification();
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw AuthException('No signed-in user is available for verification');
+      }
+      await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       throw AuthException.fromFirebaseAuth(e);
+    } on AuthException {
+      rethrow;
     } catch (e) {
       throw AuthException('Email verification failed: $e');
     }

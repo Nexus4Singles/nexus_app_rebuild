@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'dart:io' show Platform;
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/theme.dart';
@@ -67,6 +68,21 @@ class _BookingConfirmationScreenState
   Future<void> _processPayment() async {
     setState(() => _isProcessingPayment = true);
     try {
+      // Prevent invoking Flutterwave flow on Android (external link disabled).
+      if (Platform.isAndroid && widget.paymentMethod == PaymentMethod.flutterwave) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Flutterwave payments are disabled on Android. Please use another payment method or subscribe via the Play Store.'),
+            ),
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
+          );
+        }
+        return;
+      }
+
       // 1. Open Flutterwave in-app payment modal
       final result = await PaymentService().chargeFlutterwave(
         context: context,

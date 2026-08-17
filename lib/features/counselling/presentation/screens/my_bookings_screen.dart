@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:io' show Platform;
 
 import '../../../../core/theme/theme.dart';
 import '../../application/booking_service.dart';
@@ -113,6 +114,24 @@ class MyBookingsScreen extends ConsumerWidget {
       (m) => m.firestoreKey == booking.paymentMethod,
       orElse: () => PaymentMethod.flutterwave,
     );
+    // If this booking used Flutterwave but we're on Android, block returning
+    // to the external Flutterwave flow (Play Store builds should not show it).
+    if (Platform.isAndroid && method == PaymentMethod.flutterwave) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Payment not available'),
+          content: const Text(
+            'Flutterwave payments are disabled on Android builds. Please complete payment on iOS or via the web, or contact support.',
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('OK')),
+          ],
+        ),
+      );
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder:

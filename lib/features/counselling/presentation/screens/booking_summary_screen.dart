@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'dart:io' show Platform;
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/theme/theme.dart';
@@ -291,8 +292,10 @@ class _BookingSummaryScreenState extends ConsumerState<BookingSummaryScreen> {
               ),
             ),
             const SizedBox(height: 10),
+            // Hide Flutterwave option on Android builds to prevent external
+            // payment links from being shown on Google Play builds.
             ...PaymentMethod.values
-                .where((m) => m == PaymentMethod.flutterwave)
+                .where((m) => !(Platform.isAndroid && m == PaymentMethod.flutterwave))
                 .map(
                   (method) => _PaymentMethodTile(
                     method: method,

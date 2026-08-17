@@ -61,9 +61,6 @@ class AppUpdateService {
         return AppUpdateResult.noUpdateAvailable();
       }
 
-      // Mark this version as notified
-      await prefs.setString(_prefixNotifiedVersion, latestVersion);
-
       final storeUrls = data['storeUrl'] as Map<String, dynamic>? ?? {};
       final iosUrl = storeUrls['ios'] as String?;
       final androidUrl = storeUrls['android'] as String?;
@@ -78,6 +75,12 @@ class AppUpdateService {
       debugPrint('[AppUpdateService] Error checking for update: $e');
       return AppUpdateResult.noUpdateAvailable();
     }
+  }
+
+  /// Records that the update dialog was shown for [version].
+  static Future<void> markVersionNotified(String version) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefixNotifiedVersion, version);
   }
 
   /// Semantic version comparison

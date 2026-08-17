@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/providers/app_update_provider.dart';
+import 'package:nexus_app_v2/core/notifications/notification_service.dart'
+    show navigatorKey;
 import 'package:nexus_app_v2/core/services/app_update_service.dart';
 import 'package:nexus_app_v2/features/app_update/presentation/widgets/app_update_modal.dart';
 
 /// App Update Checker Widget
 /// Should be placed at the root of the app (in a Consumer widget)
 /// Automatically checks for updates when the app starts and shows modal if available
-class AppUpdateChecker extends ConsumerWidget {
+class AppUpdateChecker extends ConsumerStatefulWidget {
   final Widget child;
   final bool enableAutoCheck;
 
@@ -18,36 +20,62 @@ class AppUpdateChecker extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AppUpdateChecker> createState() => _AppUpdateCheckerState();
+}
+
+class _AppUpdateCheckerState extends ConsumerState<AppUpdateChecker> {
+  bool _isShowingUpdate = false;
+  bool _hasScheduledDialogRetry = false;
+
+  @override
+  Widget build(BuildContext context) {
     // Auto-check for updates on app start
-    if (enableAutoCheck) {
+    if (widget.enableAutoCheck) {
       ref.listen(appUpdateProvider, (previous, next) {
         next.whenData((result) {
-          if (result.updateAvailable) {
+          if (result.updateAvailable && !_isShowingUpdate) {
             _showUpdateModal(context, result);
           }
         });
       });
     }
 
-    return child;
+    return widget.child;
   }
 
   void _showUpdateModal(BuildContext context, AppUpdateResult result) {
+    final navigatorContext = navigatorKey.currentState?.context;
+    if (navigatorContext == null || result.latestVersion == null) {
+      if (mounted &&
+          result.latestVersion != null &&
+          !_hasScheduledDialogRetry) {
+        _hasScheduledDialogRetry = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _showUpdateModal(context, result);
+        });
+      }
+      return;
+    }
+
+    _hasScheduledDialogRetry = false;
+    _isShowingUpdate = true;
+
     showDialog(
-      context: context,
+      context: navigatorContext,
       barrierDismissible: true,
       builder:
           (_) => AppUpdateModal(
-            latestVersion: result.latestVersion ?? '0.0.0',
             changesSummary: result.changesSummary ?? 'New updates available',
             iosStoreUrl: result.iosStoreUrl,
             androidStoreUrl: result.androidStoreUrl,
-            onDismiss: () {
-              // Optional: Log dismiss event
-            },
           ),
-    );
+    ).then((_) async {
+      try {
+        await AppUpdateService.markVersionNotified(result.latestVersion!);
+      } finally {
+        _isShowingUpdate = false;
+      }
+    });
   }
 }
 
@@ -78,7 +106,6 @@ class ManualUpdateCheckButton extends ConsumerWidget {
               context: context,
               builder:
                   (_) => AppUpdateModal(
-                    latestVersion: result.latestVersion ?? '0.0.0',
                     changesSummary:
                         result.changesSummary ?? 'New updates available',
                     iosStoreUrl: result.iosStoreUrl,
